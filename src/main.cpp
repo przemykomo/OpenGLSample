@@ -1,5 +1,9 @@
-#include <GLFW/glfw3.h>
 #include <iostream>
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
+
+constexpr int WIDTH{640};
+constexpr int HEIGHT{480};
 
 int main() {
     if(!glfwInit()) {
@@ -7,7 +11,7 @@ int main() {
         return -1;
     }
 
-    GLFWwindow* window{ glfwCreateWindow(640, 480, "Opengl sample", NULL, NULL) };
+    GLFWwindow* window{ glfwCreateWindow(WIDTH, HEIGHT, "Opengl sample", NULL, NULL) };
     if(!window) {
         glfwTerminate();
         return -1;
@@ -15,7 +19,17 @@ int main() {
 
     glfwMakeContextCurrent(window);
 
+    if(!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
+        std::cout << "Can't initialize GLAD!\n";
+        return -1;
+    }
+
+    glViewport(0, 0, WIDTH, HEIGHT);
+    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+
     while(!glfwWindowShouldClose(window)) {
+        glClear(GL_COLOR_BUFFER_BIT);
+
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
